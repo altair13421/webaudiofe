@@ -12,18 +12,32 @@ const StyledButton = styled.button`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 
+  /* Terminal-like outline */
   &:before {
-    content: '>';
+    content: '[';
     margin-right: 8px;
-    display: inline-block;
+    color: var(--terminal-green);
   }
 
+  &:after {
+    content: ']';
+    margin-left: 8px;
+    color: var(--terminal-green);
+  }
+
+  /* Hover effects */
   &:hover {
     background-color: var(--terminal-green);
     color: var(--terminal-black);
     box-shadow: var(--terminal-glow);
     transform: translateY(-2px);
+
+    &:before, &:after {
+      color: var(--terminal-black);
+    }
   }
 
   &:active {
@@ -32,23 +46,19 @@ const StyledButton = styled.button`
 
   /* Glitch effect on hover */
   &:hover:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 255, 0, 0.1);
-    animation: glitch 0.3s infinite;
+    content: ']';
+    position: relative;
+    margin-left: 8px;
+    color: inherit;
+    text-shadow: 2px 2px var(--terminal-error);
   }
 
-  @keyframes glitch {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
+  /* Disabled state */
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    &:before { content: 'x'; }
+    &:after { content: 'x'; }
   }
 `;
 

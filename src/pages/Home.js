@@ -32,14 +32,13 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <Title>Retro Music Terminal</Title>
       <ASCIIArt>
         {`
     ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫
     .-----------------------.
     |  [>] MUSIC TERMINAL  |
-    |     Version 1.0      |
-    |   © 2024 RetroFM    |
+    |   Select Something   |
+    |   to start playing   |
     '-----------------------'
     ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪ ♫ ♪
         `}

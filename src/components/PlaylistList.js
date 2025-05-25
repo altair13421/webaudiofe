@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import RetroButton from './RetroButton';
+import { useNavigate } from 'react-router-dom';
 
 const ListContainer = styled.div`
   margin: 20px 0;
 `;
 
-const MusicItem = styled.div`
+const PlaylistItem = styled.div`
   border: 1px solid var(--terminal-green);
   margin: 10px 0;
   padding: 15px;
@@ -21,7 +21,7 @@ const MusicItem = styled.div`
   }
 
   &:before {
-    content: '♪';
+    content: '►';
     position: absolute;
     left: -20px;
     color: var(--terminal-green);
@@ -34,7 +34,7 @@ const Title = styled.h3`
   margin-bottom: 8px;
 `;
 
-const Artist = styled.p`
+const SongCount = styled.p`
   color: rgba(0, 255, 0, 0.8);
   font-size: 0.9rem;
 `;
@@ -53,19 +53,17 @@ const NoResults = styled.div`
   font-style: italic;
 `;
 
-const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
-  if (loading) return <div style={{ color: 'var(--terminal-green)' }}>LOADING TRACKS...</div>;
-  if (error) return <div style={{ color: 'var(--terminal-error)' }}>{error}</div>;
-  if (!songs || songs.length === 0) {
+const PlaylistList = ({ playlists, onSelectPlaylist }) => {
+  if (!playlists || playlists.length === 0) {
     return (
       <NoResults>
         <ASCIIDecoration>
           {`
-          No results found...
-          .-----------------.
-          |     404        |
-          |    [>_<]      |
-          '-----------------'
+          No playlists found...
+          .----------------.
+          |    Empty      |
+          |    [>_<]     |
+          '----------------'
           `}
         </ASCIIDecoration>
       </NoResults>
@@ -76,25 +74,19 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
     <ListContainer>
       <ASCIIDecoration>
         {`
-        ╔════ MUSIC LIST ════╗
-        ║    Now Playing    ║
-        ╚══════════════════╝
+        ╔═══ PLAYLISTS ═══╗
+        ║   Collection   ║
+        ╚═══════════════╝
         `}
       </ASCIIDecoration>
-      {songs.map((song) => (
-        <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
-          <Title>{song.title}</Title>
-          {/* <Artist>{song.artist.map((artist, index) => artist.name).join(', ')}</Artist> */}
-          <RetroButton onClick={(e) => {
-            e.stopPropagation();
-            // Add play functionality here
-          }}>
-            ► Play
-          </RetroButton>
-        </MusicItem>
+      {playlists.map((playlist) => (
+        <PlaylistItem key={playlist.id} onClick={() => onSelectPlaylist(playlist)}>
+          <Title>{playlist.name}</Title>
+          <SongCount>{playlist.count || 0} songs</SongCount>
+        </PlaylistItem>
       ))}
     </ListContainer>
   );
 };
 
-export default MusicList;
+export default PlaylistList;

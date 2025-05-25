@@ -2,11 +2,21 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyles = createGlobalStyle`
   :root {
-    --terminal-green: #00ff00;
-    --terminal-black: #000000;
-    --terminal-dark: #0a0a0a;
-    --terminal-font: 'Courier New', Courier, monospace;
-    --terminal-glow: 0 0 10px rgba(0, 255, 0, 0.5);
+    /* Modern terminal colors */
+    --terminal-bg: #2E3436;
+    --terminal-text: #D3D7CF;
+    --terminal-primary: #729FCF;
+    --terminal-secondary: #AD7FA8;
+    --terminal-success: #8AE234;
+    --terminal-warning: #FCE94F;
+    --terminal-error: #EF2929;
+    --terminal-comment: #888A85;
+    --terminal-selection: rgba(114, 159, 207, 0.3);
+    --terminal-cursor: #D3D7CF;
+    --terminal-border: #555753;
+    
+    /* Terminal font */
+    --terminal-font: 'Consolas', 'Monaco', 'Courier New', monospace;
   }
 
   * {
@@ -16,38 +26,41 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: var(--terminal-black);
-    color: var(--terminal-green);
+    background-color: var(--terminal-bg);
+    color: var(--terminal-text);
     font-family: var(--terminal-font);
     line-height: 1.6;
-    min-height: 100vh;
-    padding: 20px;
   }
 
-  /* Terminal-like text effect */
-  .terminal-text {
-    text-shadow: var(--terminal-glow);
-    animation: cursor-blink 1s infinite;
-  }
-
-  /* Blinking cursor animation */
-  @keyframes cursor-blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-  }
-
-  /* Scrollbar styling */
+  /* Terminal-style scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
+    height: 10px;
   }
 
   ::-webkit-scrollbar-track {
-    background: var(--terminal-dark);
+    background: var(--terminal-bg);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: var(--terminal-green);
-    border-radius: 4px;
+    background: var(--terminal-border);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--terminal-comment);
+  }
+
+  /* Selection style */
+  ::selection {
+    background: var(--terminal-selection);
+    color: var(--terminal-text);
+  }
+
+  /* Terminal cursor animation */
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 `;
 

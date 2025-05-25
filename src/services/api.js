@@ -1,74 +1,99 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/';
-
 const api = axios.create({
-  baseURL: API_BASE_URL,
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:8000/',
 });
 
-const handleApiError = (error) => {
-  if (error.response) {
-    // Server responded with error status
-    console.error('API Error:', error.response.data);
-    throw new Error(error.response.data.message || 'An error occurred');
-  } else if (error.request) {
-    // Request made but no response
-    console.error('Network Error:', error.request);
-    throw new Error('Network error - please check your connection');
-  } else {
-    // Other errors
-    console.error('Error:', error.message);
-    throw new Error('An unexpected error occurred');
-  }
-};
-
-export const apiService = {
-  async get(endpoint, params = {}) {
+// Add these playlist-related methods
+export const playlistApi = {
+  // Get all playlists
+  getPlaylists: async () => {
     try {
-      const response = await api.get(endpoint, { params });
+      const response = await api.get(`api/playlists/`);
       return response.data;
     } catch (error) {
-      handleApiError(error);
+      console.error('Error fetching playlists:', error);
+      throw error;
     }
   },
 
-  async post(endpoint, data = {}) {
+  // Get a specific playlist with its songs
+  getPlaylistById: async (playlistId) => {
     try {
-      const response = await api.post(endpoint, data);
+      const response = await api.get(`api/playlists/${playlistId}/`);
       return response.data;
     } catch (error) {
-      handleApiError(error);
+      console.error(`Error fetching playlist ${playlistId}:`, error);
+      throw error;
     }
   },
 
-  async put(endpoint, data = {}) {
+  // Add a song to a playlist
+  addSongToPlaylist: async (playlistId, songId) => {
     try {
-      const response = await api.put(endpoint, data);
+      const response = await api.post(`api/playlists/${playlistId}/add_track`, { songId });
       return response.data;
     } catch (error) {
-      handleApiError(error);
+      console.error('Error adding song to playlist:', error);
+      throw error;
     }
   },
 
-  async delete(endpoint) {
+  // Remove a song from a playlist
+  // NOT YET DONE
+  removeSongFromPlaylist: async (playlistId, songId) => {
     try {
-      const response = await api.delete(endpoint);
+      const response = await api.delete(`/playlists/${playlistId}/songs/${songId}`);
       return response.data;
     } catch (error) {
-      handleApiError(error);
+      console.error('Error removing song from playlist:', error);
+      throw error;
     }
-  }
+  },
+
+  // Create a new playlist
+  createPlaylist: async (playlistData) => {
+    try {
+      const response = await api.post('/playlists', playlistData);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating playlist:', error);
+      throw error;
+    }
+  },
 };
 
 export const musicApi = {
-  searchSongs: (query) => apiService.get('/songs/search', { query }),
-  getSongById: (id) => apiService.get(`/songs/${id}`),
-  getArtistInfo: (id) => apiService.get(`/artists/${id}`),
-  getPlaylist: () => apiService.get('/playlist'),
-  addToPlaylist: (songId) => apiService.post('/playlist', { songId }),
-  removeFromPlaylist: (songId) => apiService.delete(`/playlist/${songId}`)
+  getArtistInfo: async (artistId) => {
+    try {
+      const response = await api.get(`/artists/${artistId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching artist info:', error);
+      throw error;
+    }
+  },
+
+  searchSongs: async (query) => {
+    try {
+      const response = await api.get('/songs/search', { params: { q: query } });
+      return response.data;
+    } catch (error) {
+      console.error('Error searching songs:', error);
+      throw error;
+    }
+  },
+
+  // NOT ADDED YET
+  addToPlaylist: async (songId) => {
+    try {
+      const response = await api.post('/playlist/add', { songId });
+      return response.data;
+    } catch (error) {
+      console.error('Error adding song to playlist:', error);
+      throw error;
+    }
+  }
 };
+
+export default api;
