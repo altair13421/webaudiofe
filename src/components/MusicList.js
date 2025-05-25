@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import RetroButton from './RetroButton';
+import { useNavigate } from 'react-router-dom';
 
 const ListContainer = styled.div`
   margin: 20px 0;
@@ -54,6 +55,8 @@ const NoResults = styled.div`
 `;
 
 const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
+    const navigate = useNavigate();
+
   if (loading) return <div style={{ color: 'var(--terminal-green)' }}>LOADING TRACKS...</div>;
   if (error) return <div style={{ color: 'var(--terminal-error)' }}>{error}</div>;
   if (!songs || songs.length === 0) {
@@ -84,7 +87,14 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
       {songs.map((song) => (
         <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
           <Title>{song.title}</Title>
-          {/* <Artist>{song.artist.map((artist, index) => artist.name).join(', ')}</Artist> */}
+          {song.artists.map((artist, index) => (
+                <Artist 
+                  key={artist.id}
+                  onClick={() => {navigate(`/artist/${artist.id}`)}}
+                >
+                  {artist.name} {artist.id}
+                </Artist>
+              ))}
           <RetroButton onClick={(e) => {
             e.stopPropagation();
             // Add play functionality here

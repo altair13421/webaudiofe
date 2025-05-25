@@ -93,9 +93,9 @@ const ArtistInfo = ({ artist }) => {
     <ArtistContainer>
       <ArtistName>{artist.name}</ArtistName>
       <InfoSection>
-        <p><Label>Genre</Label>{artist.genre}</p>
-        <p><Label>Albums</Label>{artist.albums?.length || 0}</p>
-        <p><Label>Bio</Label>{artist.bio}</p>
+        <p><Label>Genre</Label>{artist.genres.map((genre, index) => genre)}</p>
+        <p><Label>Albums</Label>{artist.albums_count || 0}</p>
+        <p><Label>Bio</Label>{artist.bio? "": "[REDACTED]"}</p>
       </InfoSection>
       <ASCIIFrame>
         {`
