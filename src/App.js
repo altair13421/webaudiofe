@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Terminal from './components/Terminal';
 import GlobalStyles from './styles/GlobalStyles';
 import Sidebar from './components/Sidebar';
+import ArtistsPage from './pages/ArtistsPage';
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -50,6 +51,7 @@ function App() {
                   <Route path="/search" element={<Search />} />
                   <Route path="/playlist" element={<Playlist />} />
                   <Route path="/artist/:id" element={<ArtistDetails />} />
+                  <Route path="/artists" element={<ArtistsPage />} />
                   <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
               </React.Suspense>

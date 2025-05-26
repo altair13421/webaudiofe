@@ -113,7 +113,30 @@ export const musicApi = {
       console.error('Error adding song to playlist:', error);
       throw error;
     }
-  }
+  },
+
+  
+  getTopArtists: async () => {
+    try {
+      const response = await api.post('/artists/top');
+      return response.data;
+    } catch (error) {
+      console.error('Error getTopArtists', error);
+      throw error;
+    }
+  },
+
+  getRandomArtists: async () => {
+    try {
+      const response = await api.post('/artists/random');
+      return response.data;
+    } catch (error) {
+      console.error('Error getRandomArtists', error);
+      throw error;
+    }
+  },
 };
 
 export default api;
+
+// Add to existing API methods
