@@ -148,6 +148,26 @@ export const musicApi = {
       throw error;
     }
   },
+
+  getTrack: async (trackId) => {
+    try {
+      const response = await api.get(`/tracks/${trackId}/play`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching track:", error);
+      throw error;
+    }
+  },
+
+  getTrackInfo: async (trackId) => {
+    try {
+      const response = await api.get(`/tracks/${trackId}/info`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching track info:", error);
+      throw error;
+    }
+  },
 };
 
 export const generateArtistPlaylist = async (artistId = "", type = "") => {

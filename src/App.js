@@ -6,9 +6,10 @@ import {
   Navigate,
 } from "react-router-dom";
 import styled from "styled-components";
-import Terminal from "./components/Terminal";
 import GlobalStyles from "./styles/GlobalStyles";
+import Terminal from "./components/Terminal";
 import Sidebar from "./components/Sidebar";
+import Player from "./components/Player";
 import ArtistsPage from "./pages/ArtistsPage";
 
 const AppContainer = styled.div`
@@ -61,6 +62,7 @@ function App() {
                 </Routes>
               </React.Suspense>
             </Terminal>
+            <Player />
           </MainContent>
         </AppLayout>
       </AppContainer>
