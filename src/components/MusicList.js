@@ -88,7 +88,7 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
         <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
           <Title>{song.title}</Title>
           {song.artists.map((artist, index) => (
-                <Artist 
+                <Artist
                   key={artist.id}
                   onClick={() => {navigate(`/artist/${artist.id}`)}}
                 >

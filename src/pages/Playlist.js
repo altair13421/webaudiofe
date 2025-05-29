@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import MusicList from '../components/MusicList';
-import PlaylistList from '../components/PlaylistList';
-import { playlistApi } from '../services/api';
-import RetroBackButton from '../components/RetroBackButton';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import MusicList from "../components/MusicList";
+import PlaylistList from "../components/PlaylistList";
+import { playlistApi } from "../services/api";
+import RetroBackButton from "../components/RetroBackButton";
 
 const PlaylistContainer = styled.div`
   padding: 1rem;
@@ -40,7 +40,7 @@ const Playlist = () => {
   useEffect(() => {
     const fetchPlaylistSongs = async () => {
       if (!selectedPlaylist) return;
-      
+
       setLoading(true);
       try {
         const data = await playlistApi.getPlaylistById(selectedPlaylist.id);
@@ -57,7 +57,7 @@ const Playlist = () => {
 
   const handlePlaylistSelect = (playlist) => {
     setSelectedPlaylist(playlist);
-}
+  };
 
   const handleBack = () => {
     setSelectedPlaylist(null);
@@ -65,23 +65,21 @@ const Playlist = () => {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
+  if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
     <PlaylistContainer>
       <RetroBackButton onClick={selectedPlaylist ? handleBack : undefined} />
       <Title>
-        {selectedPlaylist 
-          ? `> ${selectedPlaylist.name}_` 
-          : '> My Playlists_'}
+        {selectedPlaylist ? `> ${selectedPlaylist.name}_` : "> My Playlists_"}
       </Title>
-      
+
       {selectedPlaylist ? (
-        <MusicList 
+        <MusicList
           songs={playlistSongs}
           onSelectSong={async (song) => {
             try {
-                console.log(song);
+              console.log(song);
             } catch (err) {
               setError(err.message);
             }
@@ -89,7 +87,7 @@ const Playlist = () => {
           actionLabel="Remove"
         />
       ) : (
-        <PlaylistList 
+        <PlaylistList
           playlists={playlists}
           onSelectPlaylist={handlePlaylistSelect}
         />

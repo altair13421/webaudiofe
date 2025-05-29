@@ -2,10 +2,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import RetroButton from '../components/RetroButton';
+import { generateArtistPlaylist } from '../services/api';
 
 const HomeContainer = styled.div`
   text-align: center;
   padding: 2rem;
+  overflow-y: auto;
   color: var(--terminal-green);
 `;
 
@@ -44,6 +46,8 @@ const Home = () => {
         `}
       </ASCIIArt>
       <ButtonContainer>
+        <RetroButton onClick={() => generateArtistPlaylist("", "random")}>Generate Playlist</RetroButton>
+        <RetroButton onClick={() => generateArtistPlaylist("", "top")}>Generate Top</RetroButton>
         <RetroButton onClick={() => navigate('/search')}>Search Music</RetroButton>
         <RetroButton onClick={() => navigate('/playlist')}>My Playlist</RetroButton>
       </ButtonContainer>

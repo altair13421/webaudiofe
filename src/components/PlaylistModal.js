@@ -24,7 +24,7 @@ const ModalContent = styled.div`
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
-  
+
   /* Terminal window style */
   &:before {
     content: '';
@@ -112,9 +112,9 @@ const PlaylistModal = ({ playlist, onClose }) => {
           <CloseButton onClick={onClose}>&times;</CloseButton>
         </ModalHeader>
         <SongList>
-          {playlist.tracks.map((song, index) => (
+          {playlist.tracks?.map((song, index) => (
             <SongItem key={song.id}>
-              {song.title} - {song.artist.map((artist, index) => artist.name).join(', ')}
+              {song.title} - {song.artists.map((artist, index) => artist.name).join(', ')}
               <span className="song-duration">{song.duration}</span>
             </SongItem>
           ))}

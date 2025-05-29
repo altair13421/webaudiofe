@@ -72,13 +72,13 @@ const PlaylistList = ({ playlists, onSelectPlaylist }) => {
 
   return (
     <ListContainer>
-      <ASCIIDecoration>
+      {/*<ASCIIDecoration>
         {`
         ╔═══ PLAYLISTS ═══╗
         ║   Collection   ║
         ╚═══════════════╝
         `}
-      </ASCIIDecoration>
+      </ASCIIDecoration>*/}
       {playlists.map((playlist) => (
         <PlaylistItem key={playlist.id} onClick={() => onSelectPlaylist(playlist)}>
           <Title>{playlist.name}</Title>

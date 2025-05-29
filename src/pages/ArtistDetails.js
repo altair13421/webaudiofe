@@ -13,7 +13,7 @@ const ArtistDetailsContainer = styled.div`
 function ArtistDetails() {
   const { id } = useParams();
   const [artist, setArtist] = useState(null);
-  const [songs, setSongs] = useState([]);
+  // const [songs, setSongs] = useState([]);
   const [albums, setAlbums] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

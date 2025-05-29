@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import RetroButton from './RetroButton';
+import { musicApi } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const ArtistContainer = styled.div`
   border: 2px solid var(--terminal-green);
@@ -9,6 +12,9 @@ const ArtistContainer = styled.div`
   box-shadow: 0 0 10px var(--terminal-green);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &:before {
     content: '>';
@@ -73,6 +79,11 @@ const ASCIIFrame = styled.pre`
 `;
 
 const ArtistInfo = ({ artist }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [playlist, setPlaylist] = useState(null);
+
   if (!artist) {
     return (
       <ArtistContainer>
@@ -92,10 +103,12 @@ const ArtistInfo = ({ artist }) => {
   return (
     <ArtistContainer>
       <ArtistName>{artist.name}</ArtistName>
+      <img src={artist.cover_art || 'https://via.placeholder.com/150'} alt={`${artist.name} profile`} style={{ width: '150px', height: '150px', borderRadius: '75px', marginBottom: '15px' }} />
       <InfoSection>
         <p><Label>Genre</Label>{artist.genres.map((genre, index) => genre)}</p>
-        <p><Label>Albums</Label>{artist.albums_count || 0}</p>
-        <p><Label>Bio</Label>{artist.bio? "": "[REDACTED]"}</p>
+        <p><Label>Albums</Label>{artist.album_count || 0}</p>
+        <p><Label>Bio</Label> <br />
+        {artist.info.bio || "[REDACTED]"}</p>
       </InfoSection>
       <ASCIIFrame>
         {`
@@ -105,6 +118,22 @@ const ArtistInfo = ({ artist }) => {
         '-----------------------'
         `}
       </ASCIIFrame>
+      <RetroButton onClick={async function() {try {
+        const [playlistData] = await Promise.all([
+          musicApi.createArtistPlaylist(artist.id),
+        ]);
+        setPlaylist(playlistData);
+        setLoading(false);
+        if (!playlistData) {
+          throw new Error('No playlist data found for this artist.');
+        }
+        navigate(`/playlist`);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+      }}>Generate Playlist</RetroButton>
     </ArtistContainer>
   );
 };
