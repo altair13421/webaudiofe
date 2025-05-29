@@ -1,10 +1,15 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import styled from 'styled-components';
-import Terminal from './components/Terminal';
-import GlobalStyles from './styles/GlobalStyles';
-import Sidebar from './components/Sidebar';
-import ArtistsPage from './pages/ArtistsPage';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import styled from "styled-components";
+import Terminal from "./components/Terminal";
+import GlobalStyles from "./styles/GlobalStyles";
+import Sidebar from "./components/Sidebar";
+import ArtistsPage from "./pages/ArtistsPage";
 
 const AppContainer = styled.div`
   min-height: 100vh;
@@ -13,10 +18,10 @@ const AppContainer = styled.div`
 `;
 
 // Lazy load components for better performance
-const Home = React.lazy(() => import('./pages/Home'));
-const Search = React.lazy(() => import('./pages/Search'));
-const Playlist = React.lazy(() => import('./pages/Playlist'));
-const ArtistDetails = React.lazy(() => import('./pages/ArtistDetails'));
+const Home = React.lazy(() => import("./pages/Home"));
+const Search = React.lazy(() => import("./pages/Search"));
+const Playlist = React.lazy(() => import("./pages/Playlist"));
+const ArtistDetails = React.lazy(() => import("./pages/ArtistDetails"));
 
 const AppLayout = styled.div`
   display: flex;
@@ -31,10 +36,10 @@ const MainContent = styled.div`
 function App() {
   // Sample playlists data - replace with your actual data
   const playlists = [
-    { id: 1, name: 'Favorites', active: true },
-    { id: 2, name: 'Rock Classics' },
-    { id: 3, name: 'Chill Vibes' },
-    { id: 4, name: 'Workout Mix' },
+    { id: 1, name: "Favorites", active: true },
+    { id: 2, name: "Rock Classics" },
+    { id: 3, name: "Chill Vibes" },
+    { id: 4, name: "Workout Mix" },
   ];
 
   return (

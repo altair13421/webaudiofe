@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const AlbumContainer = styled.div`
   margin: 1rem 0;
@@ -21,7 +21,7 @@ const TrackList = styled.ul`
 
 const TrackItem = styled.li`
   padding: 0.5rem;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
   &:hover {
     background: #111;
   }
@@ -30,12 +30,15 @@ const TrackItem = styled.li`
 export default function AlbumList({ albums }) {
   return (
     <div>
-      {albums.map(album => (
+      {albums.map((album) => (
         <AlbumContainer key={album.id}>
-          <AlbumArt src={`data:image/jpeg;base64,${album.cover_art_base64}`} alt={album.title} />
+          <AlbumArt
+            src={`data:image/jpeg;base64,${album.cover_art_base64}`}
+            alt={album.title}
+          />
           <h3>{album.title}</h3>
           <TrackList>
-            {album.tracks.map(track => (
+            {album.tracks.map((track) => (
               <TrackItem key={track.id}>◉ {track.title}</TrackItem>
             ))}
           </TrackList>

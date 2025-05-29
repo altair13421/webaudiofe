@@ -150,7 +150,6 @@ export const musicApi = {
   },
 };
 
-
 export const generateArtistPlaylist = async (artistId = "", type = "") => {
   try {
     if (artistId) {

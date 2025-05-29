@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import ArtistList from '../components/ArtistList';
-import RetroBackButton from '../components/RetroBackButton';
-import { musicApi } from '../services/api';
+import { useState, useEffect } from "react";
+import styled from "styled-components";
+import ArtistList from "../components/ArtistList";
+import RetroBackButton from "../components/RetroBackButton";
+import { musicApi } from "../services/api";
 
 const PageContainer = styled.div`
   padding: 2rem;
@@ -13,7 +13,7 @@ const PageContainer = styled.div`
 const SectionTitle = styled.h2`
   color: #0ff;
   border-bottom: 2px dashed #0f0;
-  font-family: 'Courier New', monospace;
+  font-family: "Courier New", monospace;
 `;
 
 function ArtistsPage() {
@@ -25,8 +25,8 @@ function ArtistsPage() {
     const fetchData = async () => {
       try {
         const [top, random] = await Promise.all([
-          musicApi.get('/artists/top'),
-          musicApi.get('/artists/random')
+          musicApi.get("/artists/top"),
+          musicApi.get("/artists/random"),
         ]);
         setTopArtists(top.data);
         setRandomArtists(random.data);
@@ -42,7 +42,7 @@ function ArtistsPage() {
       <RetroBackButton />
       <SectionTitle>Top Artists</SectionTitle>
       <ArtistList artists={topArtists} />
-      
+
       <SectionTitle>Random Picks</SectionTitle>
       <ArtistList artists={randomArtists} />
     </PageContainer>

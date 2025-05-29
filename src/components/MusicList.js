@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import RetroButton from './RetroButton';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import RetroButton from "./RetroButton";
+import { useNavigate } from "react-router-dom";
 
 const ListContainer = styled.div`
   margin: 20px 0;
@@ -22,7 +22,7 @@ const MusicItem = styled.div`
   }
 
   &:before {
-    content: '♪';
+    content: "♪";
     position: absolute;
     left: -20px;
     color: var(--terminal-green);
@@ -55,10 +55,14 @@ const NoResults = styled.div`
 `;
 
 const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-  if (loading) return <div style={{ color: 'var(--terminal-green)' }}>LOADING TRACKS...</div>;
-  if (error) return <div style={{ color: 'var(--terminal-error)' }}>{error}</div>;
+  if (loading)
+    return (
+      <div style={{ color: "var(--terminal-green)" }}>LOADING TRACKS...</div>
+    );
+  if (error)
+    return <div style={{ color: "var(--terminal-error)" }}>{error}</div>;
   if (!songs || songs.length === 0) {
     return (
       <NoResults>
@@ -88,17 +92,21 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
         <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
           <Title>{song.title}</Title>
           {song.artists.map((artist, index) => (
-                <Artist
-                  key={artist.id}
-                  onClick={() => {navigate(`/artist/${artist.id}`)}}
-                >
-                  {artist.name} {artist.id}
-                </Artist>
-              ))}
-          <RetroButton onClick={(e) => {
-            e.stopPropagation();
-            // Add play functionality here
-          }}>
+            <Artist
+              key={artist.id}
+              onClick={() => {
+                navigate(`/artist/${artist.id}`);
+              }}
+            >
+              {artist.name} {artist.id}
+            </Artist>
+          ))}
+          <RetroButton
+            onClick={(e) => {
+              e.stopPropagation();
+              // Add play functionality here
+            }}
+          >
             ► Play
           </RetroButton>
         </MusicItem>

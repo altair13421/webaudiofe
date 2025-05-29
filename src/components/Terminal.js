@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const TerminalContainer = styled.div`
   background-color: var(--terminal-black);
@@ -15,7 +15,7 @@ const TerminalContainer = styled.div`
 
   /* Terminal window decorations */
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -29,7 +29,7 @@ const TerminalContainer = styled.div`
 
   /* Terminal scanlines effect */
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -57,7 +57,7 @@ const TerminalHeader = styled.div`
   z-index: 2;
 
   &:before {
-    content: '⬤ ⬤ ⬤';
+    content: "⬤ ⬤ ⬤";
     position: absolute;
     top: -18px;
     left: -10px;
@@ -74,14 +74,16 @@ const TerminalTitle = styled.h1`
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 0 0 5px var(--terminal-green);
-  
+
   &:before {
-    content: '> ';
+    content: "> ";
     animation: blink 1s step-end infinite;
   }
 
   @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+      opacity: 0;
+    }
   }
 `;
 
@@ -89,14 +91,14 @@ const TerminalContent = styled.div`
   padding: 10px;
   position: relative;
   z-index: 2;
-  
+
   /* Line numbers */
   & > * {
     position: relative;
     padding-left: 20px;
-    
+
     &:before {
-      content: '$';
+      content: "$";
       position: absolute;
       left: 0;
       color: var(--terminal-green);
@@ -106,21 +108,21 @@ const TerminalContent = styled.div`
 `;
 
 const Terminal = ({ children }) => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleTitleClick = () => {
-        navigate('/');
-    };
-    return (
-        <TerminalContainer>
-            <TerminalHeader>
-                <TerminalTitle onClick={handleTitleClick}>Music Terminal v1.0</TerminalTitle>
-            </TerminalHeader>
-            <TerminalContent>
-                {children}
-            </TerminalContent>
-        </TerminalContainer>
-    );
+  const handleTitleClick = () => {
+    navigate("/");
+  };
+  return (
+    <TerminalContainer>
+      <TerminalHeader>
+        <TerminalTitle onClick={handleTitleClick}>
+          Music Terminal v1.0
+        </TerminalTitle>
+      </TerminalHeader>
+      <TerminalContent>{children}</TerminalContent>
+    </TerminalContainer>
+  );
 };
 
 export default Terminal;

@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const ListContainer = styled.div`
   margin: 20px 0;
@@ -21,7 +21,7 @@ const PlaylistItem = styled.div`
   }
 
   &:before {
-    content: '►';
+    content: "►";
     position: absolute;
     left: -20px;
     color: var(--terminal-green);
@@ -80,7 +80,10 @@ const PlaylistList = ({ playlists, onSelectPlaylist }) => {
         `}
       </ASCIIDecoration>*/}
       {playlists.map((playlist) => (
-        <PlaylistItem key={playlist.id} onClick={() => onSelectPlaylist(playlist)}>
+        <PlaylistItem
+          key={playlist.id}
+          onClick={() => onSelectPlaylist(playlist)}
+        >
           <Title>{playlist.name}</Title>
           <SongCount>{playlist.count || 0} songs</SongCount>
         </PlaylistItem>

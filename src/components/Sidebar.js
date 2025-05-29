@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { useLocation } from 'react-router-dom';
-import PlaylistModal from './PlaylistModal';
-import { playlistApi } from '../services/api';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+import PlaylistModal from "./PlaylistModal";
+import { playlistApi } from "../services/api";
+import { Link } from "react-router-dom";
 
 const SidebarContainer = styled.div`
   background: var(--terminal-black);
@@ -36,9 +36,9 @@ const SidebarTitle = styled.h2`
   font-size: 1.2rem;
   padding: 0 20px;
   margin-bottom: 20px;
-  
+
   &:before {
-    content: '# ';
+    content: "# ";
     opacity: 0.7;
   }
 `;
@@ -54,7 +54,7 @@ const PlaylistTab = styled(Link)`
 
   /* Tab indicator */
   &:before {
-    content: '|--';
+    content: "|--";
     opacity: 0.7;
     margin-right: 8px;
   }
@@ -63,9 +63,9 @@ const PlaylistTab = styled(Link)`
   &.active {
     background: var(--terminal-green);
     color: var(--terminal-black);
-    
+
     &:before {
-      content: '|> ';
+      content: "|> ";
       opacity: 1;
     }
   }
@@ -76,7 +76,7 @@ const PlaylistTab = styled(Link)`
     padding-left: 25px;
 
     &:not(.active):before {
-      content: '|> ';
+      content: "|> ";
     }
   }
 
@@ -110,7 +110,7 @@ const Sidebar = () => {
       const data = await playlistApi.getPlaylists();
       setPlaylists(data);
     } catch (error) {
-      console.error('Error loading playlists:', error);
+      console.error("Error loading playlists:", error);
     }
   };
 
@@ -120,7 +120,7 @@ const Sidebar = () => {
       setSelectedPlaylist(playlistData);
       setIsModalOpen(true);
     } catch (error) {
-      console.error('Error loading playlist details:', error);
+      console.error("Error loading playlist details:", error);
     }
   };
 
@@ -130,10 +130,12 @@ const Sidebar = () => {
         <SidebarTitle>Recent Playlists</SidebarTitle>
         {playlists.map((playlist, index) => (
           <React.Fragment key={playlist.id}>
-            <PlaylistTab 
+            <PlaylistTab
               onClick={() => handlePlaylistClick(playlist)}
               data-number={`[${index + 1}]`}
-              className={location.pathname === `/playlist/${playlist.id}` ? 'active' : ''}
+              className={
+                location.pathname === `/playlist/${playlist.id}` ? "active" : ""
+              }
             >
               {playlist.name}
             </PlaylistTab>
@@ -143,7 +145,7 @@ const Sidebar = () => {
       </SidebarContainer>
 
       {isModalOpen && (
-        <PlaylistModal 
+        <PlaylistModal
           playlist={selectedPlaylist}
           onClose={() => setIsModalOpen(false)}
         />

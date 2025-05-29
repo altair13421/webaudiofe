@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledButton = styled.button`
   background-color: var(--terminal-black);
@@ -17,13 +17,13 @@ const StyledButton = styled.button`
 
   /* Terminal-like outline */
   &:before {
-    content: '[';
+    content: "[";
     margin-right: 8px;
     color: var(--terminal-green);
   }
 
   &:after {
-    content: ']';
+    content: "]";
     margin-left: 8px;
     color: var(--terminal-green);
   }
@@ -35,7 +35,8 @@ const StyledButton = styled.button`
     box-shadow: var(--terminal-glow);
     transform: translateY(-2px);
 
-    &:before, &:after {
+    &:before,
+    &:after {
       color: var(--terminal-black);
     }
   }
@@ -46,7 +47,7 @@ const StyledButton = styled.button`
 
   /* Glitch effect on hover */
   &:hover:after {
-    content: ']';
+    content: "]";
     position: relative;
     margin-left: 8px;
     color: inherit;
@@ -57,8 +58,12 @@ const StyledButton = styled.button`
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    &:before { content: 'x'; }
-    &:after { content: 'x'; }
+    &:before {
+      content: "x";
+    }
+    &:after {
+      content: "x";
+    }
   }
 `;
 

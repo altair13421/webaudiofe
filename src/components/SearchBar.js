@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
 
 const SearchContainer = styled.div`
   margin: 20px 0;
@@ -28,7 +28,7 @@ const SearchInput = styled.input`
 
   /* Blinking cursor effect */
   &::after {
-    content: '_';
+    content: "_";
     animation: blink 1s infinite;
   }
 `;
@@ -38,12 +38,12 @@ const Prompt = styled.span`
   margin-right: 10px;
   font-family: var(--terminal-font);
   &:before {
-    content: '> search:';
+    content: "> search:";
   }
 `;
 
 const SearchBar = ({ onSearch }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();

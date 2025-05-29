@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const ModalOverlay = styled.div`
   position: fixed;
@@ -27,7 +27,7 @@ const ModalContent = styled.div`
 
   /* Terminal window style */
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -49,9 +49,9 @@ const ModalHeader = styled.div`
     color: var(--terminal-green);
     font-size: 1.2rem;
     margin: 0;
-    
+
     &:before {
-      content: '> ';
+      content: "> ";
       opacity: 0.7;
     }
   }
@@ -64,7 +64,7 @@ const CloseButton = styled.button`
   font-size: 1.5rem;
   cursor: pointer;
   padding: 5px;
-  
+
   &:hover {
     color: var(--terminal-error);
   }
@@ -82,12 +82,12 @@ const SongItem = styled.li`
   border-bottom: 1px dashed var(--terminal-green);
   opacity: 0.8;
   transition: all 0.3s ease;
-  
+
   &:before {
-    content: '$ ';
+    content: "$ ";
     opacity: 0.5;
   }
-  
+
   &:hover {
     opacity: 1;
     padding-left: 15px;
@@ -101,12 +101,11 @@ const SongItem = styled.li`
 `;
 
 const PlaylistModal = ({ playlist, onClose }) => {
-    console.log(playlist);
   if (!playlist) return null;
 
   return (
     <ModalOverlay onClick={onClose}>
-      <ModalContent onClick={e => e.stopPropagation()}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <h2>{playlist.name}</h2>
           <CloseButton onClick={onClose}>&times;</CloseButton>
@@ -114,7 +113,8 @@ const PlaylistModal = ({ playlist, onClose }) => {
         <SongList>
           {playlist.tracks?.map((song, index) => (
             <SongItem key={song.id}>
-              {song.title} - {song.artists.map((artist, index) => artist.name).join(', ')}
+              {song.title} -{" "}
+              {song.artists.map((artist, index) => artist.name).join(", ")}
               <span className="song-duration">{song.duration}</span>
             </SongItem>
           ))}

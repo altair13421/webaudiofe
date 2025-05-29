@@ -1,6 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const BackButton = styled.button`
   background: transparent;
@@ -13,7 +13,7 @@ const BackButton = styled.button`
   transition: all 0.3s ease;
 
   &:before {
-    content: '<<';
+    content: "<<";
     margin-right: 8px;
     opacity: 0.8;
   }
@@ -31,11 +31,7 @@ const BackButton = styled.button`
 const RetroBackButton = () => {
   const navigate = useNavigate();
 
-  return (
-    <BackButton onClick={() => navigate(-1)}>
-      Back
-    </BackButton>
-  );
+  return <BackButton onClick={() => navigate(-1)}>Back</BackButton>;
 };
 
 export default RetroBackButton;

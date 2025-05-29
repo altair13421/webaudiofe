@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import ArtistInfo from '../components/ArtistInfo';
-import AlbumList from '../components/AlbumList';
-import { musicApi } from '../services/api';
-import RetroBackButton from '../components/RetroBackButton';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
+import ArtistInfo from "../components/ArtistInfo";
+import AlbumList from "../components/AlbumList";
+import { musicApi } from "../services/api";
+import RetroBackButton from "../components/RetroBackButton";
 
 const ArtistDetailsContainer = styled.div`
   padding: 1rem;
@@ -38,7 +38,7 @@ function ArtistDetails() {
   }, [id]);
 
   if (loading) return <div>Loading artist details...</div>;
-  if (error) return <div style={{ color: 'red' }}>{error}</div>;
+  if (error) return <div style={{ color: "red" }}>{error}</div>;
 
   return (
     <ArtistDetailsContainer>
@@ -47,6 +47,6 @@ function ArtistDetails() {
       <AlbumList albums={albums} />
     </ArtistDetailsContainer>
   );
-};
+}
 
 export default ArtistDetails;

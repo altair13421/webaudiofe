@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
-import SearchBar from '../components/SearchBar';
-import MusicList from '../components/MusicList';
-import ArtistInfo from '../components/ArtistInfo';
-import { playlistApi } from '../services/api';
-import RetroBackButton from '../components/RetroBackButton';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import styled from "styled-components";
+import SearchBar from "../components/SearchBar";
+import MusicList from "../components/MusicList";
+import ArtistInfo from "../components/ArtistInfo";
+import { playlistApi } from "../services/api";
+import RetroBackButton from "../components/RetroBackButton";
 
 const SearchContainer = styled.div`
   padding: 1rem;
@@ -24,7 +24,7 @@ const RecentSearchTitle = styled.h3`
   font-family: var(--terminal-font);
   margin-bottom: 0.5rem;
   &:before {
-    content: '> ';
+    content: "> ";
   }
 `;
 
@@ -34,7 +34,7 @@ const SearchItem = styled.div`
   padding: 0.3rem 0;
   font-family: monospace;
   &:before {
-    content: '$ ';
+    content: "$ ";
     opacity: 0.7;
   }
   &:hover {
@@ -52,30 +52,38 @@ const Search = () => {
   const [recentSearches, setRecentSearches] = useState([]);
   const navigate = useNavigate();
 
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get("q") || "";
 
   useEffect(() => {
     // Load recent searches from localStorage
-    const savedSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+    const savedSearches = JSON.parse(
+      localStorage.getItem("recentSearches") || "[]"
+    );
     setRecentSearches(savedSearches);
   }, []);
 
   useEffect(() => {
     const searchSongs = async () => {
       if (!query) return;
-      
+
       setLoading(true);
       setError(null);
-      
+
       try {
         const results = await playlistApi.searchSongs(query);
         setSongs(results);
 
         // Add to recent searches
         if (query.trim()) {
-          const updatedSearches = [query, ...recentSearches.filter(s => s !== query)].slice(0, 5);
+          const updatedSearches = [
+            query,
+            ...recentSearches.filter((s) => s !== query),
+          ].slice(0, 5);
           setRecentSearches(updatedSearches);
-          localStorage.setItem('recentSearches', JSON.stringify(updatedSearches));
+          localStorage.setItem(
+            "recentSearches",
+            JSON.stringify(updatedSearches)
+          );
         }
       } catch (err) {
         setError(err.message);
@@ -105,28 +113,31 @@ const Search = () => {
     <SearchContainer>
       <RetroBackButton />
       <SearchBar onSearch={handleSearch} initialValue={query} />
-      
+
       {!query && recentSearches.length > 0 && (
         <RecentSearches>
           <RecentSearchTitle>Recent Searches_</RecentSearchTitle>
           {recentSearches.map((search, index) => (
-            <SearchItem 
-              key={index} 
-              onClick={() => handleSearch(search)}
-            >
+            <SearchItem key={index} onClick={() => handleSearch(search)}>
               {search}
             </SearchItem>
           ))}
         </RecentSearches>
       )}
 
-      {error && <div style={{ color: 'red' }}>{error}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
       {loading ? (
         <div>Searching...</div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px' }}>
-          <MusicList 
-            songs={songs} 
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr",
+            gap: "20px",
+          }}
+        >
+          <MusicList
+            songs={songs}
             onSelectSong={handleSelectSong}
             actionLabel="View Artist"
           />
