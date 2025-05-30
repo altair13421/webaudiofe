@@ -111,13 +111,16 @@ const PlaylistModal = ({ playlist, onClose }) => {
           <CloseButton onClick={onClose}>&times;</CloseButton>
         </ModalHeader>
         <SongList>
-          {playlist.tracks?.map((song, index) => (
-            <SongItem key={song.id}>
-              {song.title} -{" "}
-              {song.artists.map((artist, index) => artist.name).join(", ")}
-              <span className="song-duration">{song.duration}</span>
-            </SongItem>
-          ))}
+          {playlist &&
+            playlist.tracks?.map((song, index) => (
+              <SongItem key={song.id}>
+                {song.title} -{" "}
+                {song.artists
+                  ? song.artists.map((artist) => artist.name).join(", ")
+                  : ""}
+                <span className="song-duration">{song.duration}</span>
+              </SongItem>
+            ))}
         </SongList>
       </ModalContent>
     </ModalOverlay>

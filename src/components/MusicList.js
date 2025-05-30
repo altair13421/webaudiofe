@@ -88,10 +88,11 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
         ╚══════════════════╝
         `}
       </ASCIIDecoration>
-      {songs.map((song) => (
+      {songs && songs.map((song) => (
         <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
           <Title>{song.title}</Title>
-          {song.artists.map((artist, index) => (
+          {song.artists
+                ? song.artists.map((artist, index) => (
             <Artist
               key={artist.id}
               onClick={() => {
@@ -100,7 +101,7 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
             >
               {artist.name} {artist.id}
             </Artist>
-          ))}
+          )): ""}
           <RetroButton
             onClick={(e) => {
               e.stopPropagation();

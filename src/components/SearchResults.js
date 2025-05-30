@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import RetroButton from "./RetroButton";
+import { useNavigate } from "react-router-dom";
 
 const Section = styled.div`
   margin-bottom: 2rem;
@@ -22,6 +24,12 @@ const ListItem = styled.li`
   margin-bottom: 0.4rem;
   color: var(--terminal-text);
   font-family: var(--terminal-font);
+  cursor: pointer;
+  &:hover {
+    color: var(--terminal-primary);
+    background-color: var(--terminal-selection);
+    transition: background-color 0.2s ease;
+  }
 `;
 
 const Highlight = styled.span`
@@ -29,6 +37,7 @@ const Highlight = styled.span`
 `;
 
 const SearchResults = ({ results }) => {
+  const navigate = useNavigate();
   if (!results) return null;
 
   return (
@@ -39,10 +48,20 @@ const SearchResults = ({ results }) => {
           {results.tracks && results.tracks.length > 0 ? (
             results.tracks.map((track) => (
               <ListItem key={track.id}>
-                <Highlight>{track.title}</Highlight>
+                <Highlight>
+                  {track.title} <br />({track.romaji_title})
+                </Highlight>
+                <br />
+                {track.artists.map((artist, index) => (
+                  <RetroButton
+                    onClick={() => navigate(`/artist/${artist.id}`)}
+                    key={artist.id}
+                  >
+                    {artist.name}
+                  </RetroButton>
+                ))}
                 {" — "}
-                {track.artist__name}
-                {track.album__title ? ` (${track.album__title})` : ""}
+                {track.album__title ? ` ${track.album__title}` : ""}
               </ListItem>
             ))
           ) : (
@@ -72,7 +91,9 @@ const SearchResults = ({ results }) => {
           {results.artists && results.artists.length > 0 ? (
             results.artists.map((artist) => (
               <ListItem key={artist.id}>
-                <Highlight>{artist.name}</Highlight>
+                <Highlight>
+                  {artist.name} ({artist.romaji_name})
+                </Highlight>
               </ListItem>
             ))
           ) : (
@@ -87,7 +108,9 @@ const SearchResults = ({ results }) => {
           {results.albums && results.albums.length > 0 ? (
             results.albums.map((album) => (
               <ListItem key={album.id}>
-                <Highlight>{album.title}</Highlight>
+                <Highlight>
+                  {album.title} ({album.romaji_title})
+                </Highlight>
                 {album.artist ? ` — ${album.artist}` : ""}
               </ListItem>
             ))

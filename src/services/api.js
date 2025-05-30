@@ -112,7 +112,7 @@ export const musicApi = {
   // NOT ADDED YET
   addToPlaylist: async (songId) => {
     try {
-      const response = await api.post("/playlist/add", { songId });
+      const response = await api.post("/playlist/add/", { songId });
       return response.data;
     } catch (error) {
       console.error("Error adding song to playlist:", error);
@@ -122,7 +122,7 @@ export const musicApi = {
 
   getTopArtists: async () => {
     try {
-      const response = await api.post("/artists/top");
+      const response = await api.post("/artists/top/");
       return response.data;
     } catch (error) {
       console.error("Error getTopArtists", error);
@@ -132,7 +132,7 @@ export const musicApi = {
 
   getRandomArtists: async () => {
     try {
-      const response = await api.post("/artists/random");
+      const response = await api.post("/artists/random/");
       return response.data;
     } catch (error) {
       console.error("Error getRandomArtists", error);

@@ -46,17 +46,19 @@ const Home = () => {
         `}
       </ASCIIArt>
       <ButtonContainer>
+        <RetroButton onClick={() => navigate("/search")}>
+          Search Music
+        </RetroButton>
+        <RetroButton onClick={() => navigate("/playlist")}>
+          My Playlists
+        </RetroButton>
+      </ButtonContainer>
+      <ButtonContainer>
         <RetroButton onClick={() => generateArtistPlaylist("", "random")}>
           Generate Playlist
         </RetroButton>
         <RetroButton onClick={() => generateArtistPlaylist("", "top")}>
           Generate Top
-        </RetroButton>
-        <RetroButton onClick={() => navigate("/search")}>
-          Search Music
-        </RetroButton>
-        <RetroButton onClick={() => navigate("/playlist")}>
-          My Playlist
         </RetroButton>
       </ButtonContainer>
     </HomeContainer>

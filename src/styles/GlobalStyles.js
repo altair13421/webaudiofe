@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
     --terminal-selection: rgba(114, 159, 207, 0.3);
     --terminal-cursor: #D3D7CF;
     --terminal-border: #555753;
-    
+
     /* Terminal font */
     --terminal-font: 'Consolas', 'Monaco', 'Courier New', monospace;
   }

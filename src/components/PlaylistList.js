@@ -79,7 +79,7 @@ const PlaylistList = ({ playlists, onSelectPlaylist }) => {
         ╚═══════════════╝
         `}
       </ASCIIDecoration>*/}
-      {playlists.map((playlist) => (
+      {playlists && playlists.map((playlist) => (
         <PlaylistItem
           key={playlist.id}
           onClick={() => onSelectPlaylist(playlist)}
