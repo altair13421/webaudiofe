@@ -5,46 +5,78 @@ import RetroBackButton from "../components/RetroBackButton";
 import { musicApi } from "../services/api";
 
 const PageContainer = styled.div`
+  text-align: center;
   padding: 2rem;
-  border: 2px solid #0f0;
-  margin: 1rem;
+  overflow-y: auto;
+  color: var(--terminal-green);
 `;
 
 const SectionTitle = styled.h2`
-  color: #0ff;
-  border-bottom: 2px dashed #0f0;
-  font-family: "Courier New", monospace;
+  font-family: var(--terminal-font);
+  margin-bottom: 2rem;
+`;
+
+const LoadMoreButton = styled.button`
+  margin: 2rem auto;
+  display: block;
+  background: var(--terminal-bg);
+  color: var(--terminal-green);
+  border: 1px solid var(--terminal-green);
+  padding: 0.5rem 2rem;
+  font-family: var(--terminal-font);
+  cursor: pointer;
+  border-radius: 4px;
+  &:hover {
+    background: var(--terminal-green);
+    color: var(--terminal-bg);
+  }
 `;
 
 function ArtistsPage() {
-  const [topArtists, setTopArtists] = useState([]);
-  const [randomArtists, setRandomArtists] = useState([]);
+  const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const LIMIT = 20; // Number of artists per page
+
+  const fetchArtists = async (reset = false) => {
+    setLoading(true);
+    try {
+      const response = await musicApi.getArtists({
+        limit: LIMIT,
+        page: reset ? 1 : pageNumber,
+      });
+      if (reset) {
+        setArtists(response.results);
+      } else {
+        setArtists((prev) => [...prev, ...response.results]);
+      }
+      setHasMore(response.count > LIMIT);
+      setOffset((prev) => prev + LIMIT);
+      setPageNumber((prev) => (reset ? 1 : prev + 1));
+      console.log(pageNumber)
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [top, random] = await Promise.all([
-          musicApi.get("/artists/top"),
-          musicApi.get("/artists/random"),
-        ]);
-        setTopArtists(top.data);
-        setRandomArtists(random.data);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    fetchArtists(true);
+    // eslint-disable-next-line
   }, []);
 
   return (
     <PageContainer>
       <RetroBackButton />
-      <SectionTitle>Top Artists</SectionTitle>
-      <ArtistList artists={topArtists} />
-
-      <SectionTitle>Random Picks</SectionTitle>
-      <ArtistList artists={randomArtists} />
+      <SectionTitle>All Artists</SectionTitle>
+      <ArtistList artists={artists} />
+      {loading && <div>Loading artists...</div>}
+      {hasMore && !loading && (
+        <LoadMoreButton onClick={() => fetchArtists(false)}>
+          Load More {pageNumber}
+        </LoadMoreButton>
+      )}
     </PageContainer>
   );
 }

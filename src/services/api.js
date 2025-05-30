@@ -78,6 +78,15 @@ export const musicApi = {
     }
   },
 
+  getArtists: async (limit, page=1) => {
+    try {
+      const response = await api.get(`/artists/?page=${page}`);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching artist info:", error);
+      throw error;
+    }
+  },
   getArtistSongs: async (artistId) => {
     try {
       const response = await api.get(`/artists/${artistId}/tracks`);

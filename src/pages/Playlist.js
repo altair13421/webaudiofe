@@ -26,7 +26,7 @@ const Playlist = () => {
     const fetchPlaylists = async () => {
       try {
         const data = await playlistApi.getPlaylists();
-        setPlaylists(data);
+        setPlaylists(data.results);
       } catch (err) {
         setError(err.message);
       } finally {

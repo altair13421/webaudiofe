@@ -54,6 +54,14 @@ const Home = () => {
         </RetroButton>
       </ButtonContainer>
       <ButtonContainer>
+        <RetroButton onClick={() => navigate("/artists")}>
+          Artists
+        </RetroButton>
+        <RetroButton onClick={() => navigate("/playlist")}>
+          Albums
+        </RetroButton>
+      </ButtonContainer>
+      <ButtonContainer>
         <RetroButton onClick={() => generateArtistPlaylist("", "random")}>
           Generate Playlist
         </RetroButton>

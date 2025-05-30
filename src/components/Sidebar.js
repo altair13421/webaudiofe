@@ -108,7 +108,7 @@ const Sidebar = () => {
   const loadPlaylists = async () => {
     try {
       const data = await playlistApi.getPlaylists();
-      setPlaylists(data);
+      setPlaylists(data.results);
     } catch (error) {
       console.error("Error loading playlists:", error);
     }
@@ -128,7 +128,7 @@ const Sidebar = () => {
     <>
       <SidebarContainer>
         <SidebarTitle>Recent Playlists</SidebarTitle>
-        {playlists.map((playlist, index) => (
+        {playlists && playlists.map((playlist, index) => (
           <React.Fragment key={playlist.id}>
             <PlaylistTab
               onClick={() => handlePlaylistClick(playlist)}
