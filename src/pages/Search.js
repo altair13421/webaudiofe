@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
-import MusicList from "../components/MusicList";
-import ArtistInfo from "../components/ArtistInfo";
-import { playlistApi } from "../services/api";
+import { playlistApi, musicApi } from "../services/api";
 import RetroBackButton from "../components/RetroBackButton";
-
+import SearchResults from "../components/SearchResults";
 const SearchContainer = styled.div`
   padding: 1rem;
 `;
@@ -46,6 +44,10 @@ const SearchItem = styled.div`
 const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [songs, setSongs] = useState([]);
+  const [artists, setArtists] = useState([]);
+  const [albums, setAlbums] = useState([]);
+  const [playlists, setPlaylists] = useState([]);
+  const [results, setResults] = useState(null);
   const [selectedArtist, setSelectedArtist] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -70,8 +72,12 @@ const Search = () => {
       setError(null);
 
       try {
-        const results = await playlistApi.searchSongs(query);
-        setSongs(results);
+        const response = await musicApi.searchSongs(query);
+        setSongs(response.tracks || []);
+        setArtists(response.artists || []);
+        setAlbums(response.albums || []);
+        setPlaylists(response.playlists || []);
+        setResults(response);
 
         // Add to recent searches
         if (query.trim()) {
@@ -92,8 +98,10 @@ const Search = () => {
       }
     };
 
-    searchSongs();
-  }, [query, recentSearches]);
+    if (query) {
+      searchSongs();
+    }
+  }, [query]);
 
   const handleSearch = (newQuery) => {
     setSearchParams({ q: newQuery });
@@ -136,12 +144,7 @@ const Search = () => {
             gap: "20px",
           }}
         >
-          <MusicList
-            songs={songs}
-            onSelectSong={handleSelectSong}
-            actionLabel="View Artist"
-          />
-          <ArtistInfo artist={selectedArtist} />
+          <SearchResults results={results} />
         </div>
       )}
     </SearchContainer>

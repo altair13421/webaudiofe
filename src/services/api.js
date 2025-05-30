@@ -101,6 +101,7 @@ export const musicApi = {
   searchSongs: async (query) => {
     try {
       const response = await api.get("/search/", { params: { q: query } });
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error searching songs:", error);

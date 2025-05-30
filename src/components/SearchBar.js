@@ -42,7 +42,7 @@ const Prompt = styled.span`
   }
 `;
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, initialValue = "" }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSubmit = (e) => {

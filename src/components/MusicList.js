@@ -56,7 +56,7 @@ const NoResults = styled.div`
 
 const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
   const navigate = useNavigate();
-
+  console.log("MusicList songs:", songs);
   if (loading)
     return (
       <div style={{ color: "var(--terminal-green)" }}>LOADING TRACKS...</div>
