@@ -39,7 +39,7 @@ const Highlight = styled.span`
 const SearchResults = ({ results }) => {
   const navigate = useNavigate();
   if (!results) return null;
-
+  console.log("SearchResults results:", results.albums);
   return (
     <div>
       <Section>
@@ -61,7 +61,7 @@ const SearchResults = ({ results }) => {
                   </RetroButton>
                 ))}
                 {" — "}
-                {track.album__title ? ` ${track.album__title}` : ""}
+                {track.album ? ` ${track.album}` : ""}
               </ListItem>
             ))
           ) : (
@@ -91,7 +91,7 @@ const SearchResults = ({ results }) => {
           {results.artists && results.artists.length > 0 ? (
             results.artists.map((artist) => (
               <ListItem key={artist.id}>
-                <Highlight>
+                <Highlight onClick={() => navigate(`/artist/${artist.id}`)}>
                   {artist.name} ({artist.romaji_name})
                 </Highlight>
               </ListItem>
@@ -111,7 +111,13 @@ const SearchResults = ({ results }) => {
                 <Highlight>
                   {album.title} ({album.romaji_title})
                 </Highlight>
-                {album.artist ? ` — ${album.artist}` : ""}
+                <br />
+                <RetroButton
+                  onClick={() => navigate(`/artist/${album.artist.id}`)}
+                  key={album.artist.id}
+                >
+                  {album.artist.name}
+                </RetroButton>
               </ListItem>
             ))
           ) : (
