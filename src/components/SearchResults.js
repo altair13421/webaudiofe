@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import RetroButton from "./RetroButton";
 import { useNavigate } from "react-router-dom";
+import { PlayerContext } from "./Player";
 
 const Section = styled.div`
   margin-bottom: 2rem;
@@ -38,8 +39,10 @@ const Highlight = styled.span`
 
 const SearchResults = ({ results }) => {
   const navigate = useNavigate();
+  const { playTrack } = useContext(PlayerContext);
+  
   if (!results) return null;
-  console.log("SearchResults results:", results.albums);
+  
   return (
     <div>
       <Section>
@@ -62,6 +65,14 @@ const SearchResults = ({ results }) => {
                 ))}
                 {" — "}
                 {track.album ? ` ${track.album}` : ""}
+                <RetroButton
+                  onClick={() => {
+                    // Play this single track from search results
+                    playTrack(track);
+                  }}
+                >
+                  ► Play
+                </RetroButton>
               </ListItem>
             ))
           ) : (

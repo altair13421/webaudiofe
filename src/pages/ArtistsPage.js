@@ -44,7 +44,6 @@ function ArtistsPage() {
     setLoading(true);
     try {
       const response = await musicApi.getArtists({
-        limit: LIMIT,
         page: reset ? 1 : pageNumber,
       });
       if (reset) {
@@ -52,10 +51,8 @@ function ArtistsPage() {
       } else {
         setArtists((prev) => [...prev, ...response.results]);
       }
-      setHasMore(response.count > LIMIT);
-      setOffset((prev) => prev + LIMIT);
+      setHasMore(response.count > LIMIT * pageNumber);
       setPageNumber((prev) => (reset ? 1 : prev + 1));
-      console.log(pageNumber)
     } finally {
       setLoading(false);
     }

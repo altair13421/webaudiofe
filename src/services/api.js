@@ -78,9 +78,9 @@ export const musicApi = {
     }
   },
 
-  getArtists: async (limit, page=1) => {
+  getArtists: async (params) => {
     try {
-      const response = await api.get(`/artists/?page=${page}`);
+      const response = await api.get('/artists/', { params });
       return response.data;
     } catch (error) {
       console.error("Error fetching artist info:", error);
@@ -110,7 +110,6 @@ export const musicApi = {
   searchSongs: async (query) => {
     try {
       const response = await api.get("/search/", { params: { q: query } });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error("Error searching songs:", error);
@@ -159,25 +158,20 @@ export const musicApi = {
     }
   },
 
-  getTrack: async (trackId) => {
-    try {
-      const response = await api.get(`/tracks/${trackId}/play`);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching track:", error);
-      throw error;
-    }
-  },
 
   getTrackInfo: async (trackId) => {
     try {
-      const response = await api.get(`/tracks/${trackId}/info`);
+      const response = await api.get(`/track/${trackId}/info`);
       return response.data;
     } catch (error) {
       console.error("Error fetching track info:", error);
       throw error;
     }
   },
+
+  // Note: We don't need a getTrack method that returns data
+  // since the /track/${trackId}/play endpoint streams the file directly
+  // and should be used as the audio src attribute
 };
 
 export const generateArtistPlaylist = async (artistId = "", type = "") => {

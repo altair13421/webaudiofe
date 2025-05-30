@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import RetroButton from "./RetroButton";
 import { useNavigate } from "react-router-dom";
+import { PlayerContext } from "./Player";
 
 const ListContainer = styled.div`
   margin: 20px 0;
@@ -56,7 +57,9 @@ const NoResults = styled.div`
 
 const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
   const navigate = useNavigate();
-  console.log("MusicList songs:", songs);
+  const { playTrack } = useContext(PlayerContext);
+  
+  
   if (loading)
     return (
       <div style={{ color: "var(--terminal-green)" }}>LOADING TRACKS...</div>
@@ -89,13 +92,14 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
         `}
       </ASCIIDecoration>
       {songs && songs.map((song) => (
-        <MusicItem key={song.id} onClick={() => onSelectSong(song)}>
+        <MusicItem key={song.id} onClick={() => onSelectSong && onSelectSong(song)}>
           <Title>{song.title}</Title>
           {song.artists
                 ? song.artists.map((artist, index) => (
             <Artist
               key={artist.id}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 navigate(`/artist/${artist.id}`);
               }}
             >
@@ -105,10 +109,20 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
           <RetroButton
             onClick={(e) => {
               e.stopPropagation();
-              // Add play functionality here
+              // Play this single track
+              playTrack(song);
             }}
           >
             ► Play
+          </RetroButton>
+          <RetroButton
+            onClick={(e) => {
+              e.stopPropagation();
+              // Play the entire playlist starting from this track
+              playTrack(song, songs);
+            }}
+          >
+            ► Play All
           </RetroButton>
         </MusicItem>
       ))}
