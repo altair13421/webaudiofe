@@ -4,35 +4,51 @@ import { useLocation } from "react-router-dom";
 import PlaylistModal from "./PlaylistModal";
 import { playlistApi } from "../services/api";
 import { Link } from "react-router-dom";
+import Player from "./Player";
 
 const SidebarContainer = styled.div`
-  background: var(--terminal-black);
-  border-right: 1px solid var(--terminal-green);
+  background: var(--terminal-bg);
+  border-right: 1px solid var(--terminal-primary);
   width: 250px;
   height: 100vh;
-  padding: 20px 0;
   position: fixed;
   left: 0;
   top: 0;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+`;
 
+const PlaylistsContainer = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 0;
+  
   /* Terminal-like scrollbar */
   &::-webkit-scrollbar {
     width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: var(--terminal-black);
+    background: var(--terminal-bg);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: var(--terminal-green);
+    background: var(--terminal-primary);
     border-radius: 4px;
   }
 `;
 
+const PlayerWrapper = styled.div`
+  background: var(--terminal-comment);
+  padding: 10px 5px;
+  border-top: 1px solid var(--terminal-border);
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+`;
+
 const SidebarTitle = styled.h2`
-  color: var(--terminal-green);
+  color: var(--terminal-primary);
   font-size: 1.2rem;
   padding: 0 20px;
   margin-bottom: 20px;
@@ -45,7 +61,7 @@ const SidebarTitle = styled.h2`
 
 const PlaylistTab = styled(Link)`
   display: block;
-  color: var(--terminal-green);
+  color: var(--terminal-primary);
   padding: 10px 20px;
   text-decoration: none;
   font-family: var(--terminal-font);
@@ -61,8 +77,8 @@ const PlaylistTab = styled(Link)`
 
   /* Active state */
   &.active {
-    background: var(--terminal-green);
-    color: var(--terminal-black);
+    background: var(--terminal-primary);
+    color: var(--terminal-bg);
 
     &:before {
       content: "|> ";
@@ -72,7 +88,7 @@ const PlaylistTab = styled(Link)`
 
   /* Hover state */
   &:hover {
-    background: rgba(0, 255, 0, 0.1);
+    background: rgba(114, 159, 207, 0.1);
     padding-left: 25px;
 
     &:not(.active):before {
@@ -90,7 +106,7 @@ const PlaylistTab = styled(Link)`
 `;
 
 const Divider = styled.div`
-  border-top: 1px dashed var(--terminal-green);
+  border-top: 1px dashed var(--terminal-primary);
   margin: 10px 20px;
   opacity: 0.3;
 `;
@@ -127,21 +143,27 @@ const Sidebar = () => {
   return (
     <>
       <SidebarContainer>
-        <SidebarTitle>Recent Playlists</SidebarTitle>
-        {playlists && playlists.map((playlist, index) => (
-          <React.Fragment key={playlist.id}>
-            <PlaylistTab
-              onClick={() => handlePlaylistClick(playlist)}
-              data-number={`[${index + 1}]`}
-              className={
-                location.pathname === `/playlist/${playlist.id}` ? "active" : ""
-              }
-            >
-              {playlist.name}
-            </PlaylistTab>
-            {index < playlists.length - 1 && <Divider />}
-          </React.Fragment>
-        ))}
+        <PlaylistsContainer>
+          <SidebarTitle>Recent Playlists</SidebarTitle>
+          {playlists && playlists.map((playlist, index) => (
+            <React.Fragment key={playlist.id}>
+              <PlaylistTab
+                onClick={() => handlePlaylistClick(playlist)}
+                data-number={`[${index + 1}]`}
+                className={
+                  location.pathname === `/playlist/${playlist.id}` ? "active" : ""
+                }
+              >
+                {playlist.name}
+              </PlaylistTab>
+              {index < playlists.length - 1 && <Divider />}
+            </React.Fragment>
+          ))}
+        </PlaylistsContainer>
+        
+        <PlayerWrapper>
+          <Player />
+        </PlayerWrapper>
       </SidebarContainer>
 
       {isModalOpen && (

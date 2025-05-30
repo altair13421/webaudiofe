@@ -1,120 +1,170 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import RetroButton from "./RetroButton";
-import { musicApi } from "../services/api";
-import { useNavigate } from "react-router-dom";
 
 const PlayerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 2px solid var(--terminal-green);
-  border-radius: 10px;
-  padding: 20px;
-  background-color: var(--terminal-black);
-  box-shadow: 0 0 10px var(--terminal-green);
+  border-radius: 8px;
+  padding: 10px 5px;
   width: 100%;
-  max-width: 600px;
+  max-width: 230px;
+  overflow: hidden;
 `;
 
 const PlayerHeader = styled.h2`
-  color: var(--terminal-green);
+  color: var(--terminal-text);
   font-family: var(--terminal-font);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
 `;
 
 const TrackInfo = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-family: var(--terminal-font);
-  color: var(--terminal-green);
+  color: var(--terminal-text);
+  width: 100%;
 `;
 
 const TrackTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: 0.9rem;
   margin: 0;
+  text-align: center;
+  max-width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const TrackArtist = styled.p`
-  font-size: 1rem;
+  font-size: 0.75rem;
   margin: 0;
+  text-align: center;
+  max-width: 210px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const Controls = styled.div`
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 100%;
 `;
 
-const ControlButton = styled(RetroButton)`
-  margin: 0 10px;
+const ControlButton = styled.button`
+  background: var(--terminal-bg);
+  color: var(--terminal-text);
+  border: 1px solid var(--terminal-primary);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 0 5px;
+  font-family: var(--terminal-font);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: var(--terminal-primary);
+    color: var(--terminal-bg);
+  }
+`;
+
+const NavButton = styled.button`
+  background: transparent;
+  color: var(--terminal-text);
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    color: var(--terminal-primary);
+  }
 `;
 
 const ProgressBar = styled.input`
-  width: 100%;
-  margin: 10px 0;
+  width: 95%;
+  margin: 5px 0;
   -webkit-appearance: none;
   background: transparent;
   border: none;
-  border-radius: 10px;
-  height: 5px;
+  height: 4px;
+  
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    background: var(--terminal-border);
+    border-radius: 2px;
+  }
+  
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
+    background: var(--terminal-primary);
+    margin-top: -4px;
+  }
 `;
 
 const VolumeBar = styled.input`
-  width: 100px;
-  margin: 10px 0;
+  width: 70px;
+  margin: 5px 0;
   -webkit-appearance: none;
   background: transparent;
   border: none;
-  border-radius: 10px;
-  height: 5px;
+  height: 3px;
+  
+  &::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 3px;
+    background: var(--terminal-border);
+    border-radius: 1.5px;
+  }
+  
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background: var(--terminal-primary);
+    margin-top: -3.5px;
+  }
 `;
 
 const VolumeLabel = styled.p`
-  color: var(--terminal-green);
+  color: var(--terminal-text);
   font-family: var(--terminal-font);
   margin: 0;
+  font-size: 0.7rem;
 `;
 
 const VolumeSlider = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 10px;
-`;
-
-const VolumeIcon = styled.i`
-  font-size: 1.5rem;
-  color: var(--terminal-green);
-  margin-right: 10px;
-  cursor: pointer;
-  &:hover {
-    color: var(--terminal-yellow);
-  }
-`;
-
-const VolumeIconContainer = styled.div`
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 5px var(--terminal-green);
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.7);
-  }
+  margin-top: 5px;
+  width: 100%;
 `;
 
 const PlaybackMode = styled.div`
-  color: var(--terminal-green);
+  color: var(--terminal-text);
   font-family: var(--terminal-font);
-  margin-top: 10px;
-  font-size: 0.8rem;
+  margin-top: 5px;
+  font-size: 0.7rem;
+  text-align: center;
 `;
 
 // Create a global audio context to manage the player state across the application
@@ -164,12 +214,15 @@ export const PlayerProvider = ({ children }) => {
     setIsPlaying(prev => !prev);
   }, []);
   
+  // In the PlayerProvider component
   const nextTrack = useCallback(() => {
     if (playlist.length === 0 || currentIndex >= playlist.length - 1) return;
     
     const nextIndex = currentIndex + 1;
     setCurrentIndex(nextIndex);
     setCurrentTrack(playlist[nextIndex]);
+    // Make sure we're playing when navigating
+    setIsPlaying(true);
   }, [playlist, currentIndex]);
   
   const previousTrack = useCallback(() => {
@@ -178,6 +231,8 @@ export const PlayerProvider = ({ children }) => {
     const prevIndex = currentIndex - 1;
     setCurrentIndex(prevIndex);
     setCurrentTrack(playlist[prevIndex]);
+    // Make sure we're playing when navigating
+    setIsPlaying(true);
   }, [playlist, currentIndex]);
   
   return (
@@ -224,10 +279,8 @@ const Player = () => {
   useEffect(() => {
     if (audioRef.current && currentTrack) {
       // The endpoint directly streams the audio file
-      // We need to use the full API URL path
       const apiBaseUrl = ("http://localhost:8000/").replace(/\/$/, "");
       const audioUrl = `${apiBaseUrl}/track/${currentTrack.id}/play`;
-      console.log("Audio URL:", audioUrl);
       audioRef.current.src = audioUrl;
       audioRef.current.load();
       setProgress(0);
@@ -235,8 +288,8 @@ const Player = () => {
         audioRef.current.play().catch(err => console.error("Playback error:", err));
       }
     }
-  }, [currentTrack, isPlaying]);
-
+  }, [currentTrack]); 
+  
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -262,7 +315,6 @@ const Player = () => {
     }
   };
 
-  // Handle track ended - play next track in playlist
   const handleTrackEnded = () => {
     nextTrack();
   };
@@ -312,27 +364,11 @@ const Player = () => {
       </TrackInfo>
       <audio ref={audioRef} />
       <Controls>
-        <ControlButton onClick={previousTrack}>
-          <RetroButton
-            emojicode="⏮️"
-            fontSize={20}
-            copyColor="#fff"
-            shape="circle"
-            fillButton={true}
-          />
-        </ControlButton>
+        <NavButton onClick={previousTrack}>⏮️</NavButton>
         <ControlButton onClick={togglePlay}>
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? "⏸" : "▶"}
         </ControlButton>
-        <ControlButton onClick={nextTrack}>
-          <RetroButton
-            emojicode="⏭️"
-            fontSize={20}
-            copyColor="#fff"
-            shape="circle"
-            fillButton={true}
-          />
-        </ControlButton>
+        <NavButton onClick={nextTrack}>⏭️</NavButton>
       </Controls>
       <ProgressBar
         type="range"
@@ -342,9 +378,7 @@ const Player = () => {
         onChange={handleProgressChange}
       />
       <VolumeSlider>
-        <VolumeIconContainer>
-          <VolumeIcon className="fas fa-volume-down" />
-        </VolumeIconContainer>
+        <span style={{ fontSize: '0.7rem', marginRight: '5px' }}>🔈</span>
         <VolumeBar
           type="range"
           min="0"
@@ -352,15 +386,13 @@ const Player = () => {
           value={volume}
           onChange={(e) => setVolume(e.target.value)}
         />
-        <VolumeIconContainer>
-          <VolumeIcon className="fas fa-volume-up" />
-        </VolumeIconContainer>
+        <span style={{ fontSize: '0.7rem', marginLeft: '5px' }}>🔊</span>
       </VolumeSlider>
       <VolumeLabel>{volume}%</VolumeLabel>
       
       {playlist.length > 1 && (
         <PlaybackMode>
-          Playing track {currentIndex + 1} of {playlist.length}
+          Track {currentIndex + 1}/{playlist.length}
         </PlaybackMode>
       )}
     </PlayerContainer>

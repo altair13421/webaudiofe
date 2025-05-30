@@ -9,12 +9,12 @@ import styled from "styled-components";
 import GlobalStyles from "./styles/GlobalStyles";
 import Terminal from "./components/Terminal";
 import Sidebar from "./components/Sidebar";
-import Player, { PlayerProvider } from "./components/Player";
+import { PlayerProvider } from "./components/Player";
 import ArtistsPage from "./pages/ArtistsPage";
 
 const AppContainer = styled.div`
   min-height: 100vh;
-  background-color: var(--terminal-black);
+  background-color: var(--terminal-bg);
   padding: 20px;
 `;
 
@@ -63,7 +63,7 @@ function App() {
                   </Routes>
                 </React.Suspense>
               </Terminal>
-              <Player />
+              {/* Player component removed from here as it's now in the Sidebar */}
             </MainContent>
           </AppLayout>
         </AppContainer>
