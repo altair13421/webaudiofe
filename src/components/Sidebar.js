@@ -39,9 +39,9 @@ const PlaylistsContainer = styled.div`
 `;
 
 const PlayerWrapper = styled.div`
-  background: var(--terminal-comment);
+  background: var(--terminal-bg);
   padding: 10px 5px;
-  border-top: 1px solid var(--terminal-border);
+  border-top: 1px solid var(--terminal-bg);
   display: flex;
   justify-content: center;
   overflow: hidden;

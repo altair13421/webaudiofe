@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import RetroButton from "./RetroButton";
+import { PlayerContext } from "./Player";
 
 const ModalOverlay = styled.div`
   position: fixed;

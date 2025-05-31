@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
-import RetroButton from "./RetroButton";
+import { musicApi } from "../services/api";
 
 const PlayerContainer = styled.div`
   display: flex;
@@ -60,37 +60,37 @@ const Controls = styled.div`
   width: 100%;
 `;
 
-const ControlButton = styled.button`
+const TerminalButton = styled.button`
   background: var(--terminal-bg);
   color: var(--terminal-text);
-  border: 1px solid var(--terminal-primary);
-  border-radius: 4px;
+  border: 0px solid var(--terminal-bg);
   padding: 4px 8px;
   margin: 0 5px;
   font-family: var(--terminal-font);
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
+  position: relative;
   
-  &:hover {
-    background: var(--terminal-primary);
-    color: var(--terminal-bg);
+  &:before {
+    content: "[";
+    margin-right: 4px;
+    color: var(--terminal-comment);
   }
-`;
 
-const NavButton = styled.button`
-  background: transparent;
-  color: var(--terminal-text);
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  &:after {
+    content: "]";
+    margin-left: 4px;
+    color: var(--terminal-comment);
+  }
   
   &:hover {
-    color: var(--terminal-primary);
+    background: var(--terminal-comment);
+    color: var(--terminal-bg);
+    
+    &:before, &:after {
+      color: var(--terminal-bg);
+    }
   }
 `;
 
@@ -165,6 +165,23 @@ const PlaybackMode = styled.div`
   margin-top: 5px;
   font-size: 0.7rem;
   text-align: center;
+`;
+
+const AlbumArt = styled.div`
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
+  border: 1px solid var(--terminal-primary);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 
 // Create a global audio context to manage the player state across the application
@@ -268,11 +285,27 @@ const Player = () => {
   
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(50);
+  const [coverArt, setCoverArt] = useState(null);
   const audioRef = React.useRef(null);
 
   useEffect(() => {
     if (currentTrack) {
-      document.title = `${currentTrack.title} - ${currentTrack.artists ? currentTrack.artists[0].name : 'Unknown'}`;  
+      document.title = `${currentTrack.title} - ${currentTrack.artists ? currentTrack.artists[0].name : 'Unknown'}`;
+      
+      // Fetch track info to get cover art
+      const fetchTrackInfo = async () => {
+        try {
+          const trackInfo = await musicApi.getTrackInfo(currentTrack.id);
+          if (trackInfo && trackInfo.cover_art) {
+            console.log(trackInfo)
+            setCoverArt(trackInfo.cover_art);
+          }
+        } catch (error) {
+          console.error("Error fetching track info:", error);
+        }
+      };
+      
+      fetchTrackInfo();
     }
   }, [currentTrack]);
 
@@ -354,6 +387,13 @@ const Player = () => {
   return (
     <PlayerContainer>
       <PlayerHeader>Now Playing</PlayerHeader>
+      
+      {coverArt && (
+        <AlbumArt>
+          <img src={`data:image/jpeg;base64,${coverArt}`} alt="Album Cover" />
+        </AlbumArt>
+      )}
+      
       <TrackInfo>
         <TrackTitle>{currentTrack.title}</TrackTitle>
         <TrackArtist>
@@ -362,14 +402,17 @@ const Player = () => {
             : "Unknown Artist"}
         </TrackArtist>
       </TrackInfo>
+      
       <audio ref={audioRef} />
+      
       <Controls>
-        <NavButton onClick={previousTrack}>⏮️</NavButton>
-        <ControlButton onClick={togglePlay}>
-          {isPlaying ? "⏸" : "▶"}
-        </ControlButton>
-        <NavButton onClick={nextTrack}>⏭️</NavButton>
+        <TerminalButton onClick={previousTrack}>PREV</TerminalButton>
+        <TerminalButton onClick={togglePlay}>
+          {isPlaying ? "PAUSE" : "PLAY"}
+        </TerminalButton>
+        <TerminalButton onClick={nextTrack}>NEXT</TerminalButton>
       </Controls>
+      
       <ProgressBar
         type="range"
         min="0"
@@ -377,8 +420,9 @@ const Player = () => {
         value={progress || 0}
         onChange={handleProgressChange}
       />
+      
       <VolumeSlider>
-        <span style={{ fontSize: '0.7rem', marginRight: '5px' }}>🔈</span>
+        <span style={{ fontSize: '0.7rem', marginRight: '5px' }}>VOL-</span>
         <VolumeBar
           type="range"
           min="0"
@@ -386,8 +430,9 @@ const Player = () => {
           value={volume}
           onChange={(e) => setVolume(e.target.value)}
         />
-        <span style={{ fontSize: '0.7rem', marginLeft: '5px' }}>🔊</span>
+        <span style={{ fontSize: '0.7rem', marginLeft: '5px' }}>+</span>
       </VolumeSlider>
+      
       <VolumeLabel>{volume}%</VolumeLabel>
       
       {playlist.length > 1 && (

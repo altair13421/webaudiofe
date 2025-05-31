@@ -1,4 +1,7 @@
+import React, { useContext } from "react";
 import styled from "styled-components";
+import RetroButton from "./RetroButton";
+import { PlayerContext } from "./Player";
 
 const AlbumContainer = styled.div`
   margin: 1rem 0;
@@ -28,6 +31,8 @@ const TrackItem = styled.li`
 `;
 
 export default function AlbumList({ albums }) {
+  const { playTrack } = useContext(PlayerContext);
+
   return (
     <div>
       {albums.map((album) => (
@@ -36,10 +41,24 @@ export default function AlbumList({ albums }) {
             src={`data:image/jpeg;base64,${album.cover_art_base64}`}
             alt={album.title}
           />
+          <RetroButton
+            onClick={(e) => {
+              e.stopPropagation();
+              // Play this album
+              playTrack(album.tracks[0], album.tracks);
+            }}
+            key={album.artist.id}
+          >
+            Play Album
+          </RetroButton>
           <h3>{album.title}</h3>
           <TrackList>
             {album.tracks.map((track) => (
-              <TrackItem key={track.id}>◉ {track.title}</TrackItem>
+              <TrackItem onClick={(e) => {
+                e.stopPropagation();
+                // Play this single track
+                playTrack(track);
+              }} key={track.id}>◉ {track.title}</TrackItem>
             ))}
           </TrackList>
         </AlbumContainer>
