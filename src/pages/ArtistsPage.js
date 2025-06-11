@@ -35,8 +35,7 @@ const LoadMoreButton = styled.button`
 function ArtistsPage() {
   const [artists, setArtists] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [offset, setOffset] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(2);
   const [hasMore, setHasMore] = useState(true);
   const LIMIT = 20; // Number of artists per page
 
@@ -52,7 +51,7 @@ function ArtistsPage() {
         setArtists((prev) => [...prev, ...response.results]);
       }
       setHasMore(response.count > LIMIT * pageNumber);
-      setPageNumber((prev) => (reset ? 1 : prev + 1));
+      setPageNumber((prev) => (reset ? 2 : prev + 1));
     } finally {
       setLoading(false);
     }
