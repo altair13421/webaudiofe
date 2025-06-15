@@ -40,9 +40,9 @@ const Highlight = styled.span`
 const SearchResults = ({ results }) => {
   const navigate = useNavigate();
   const { playTrack } = useContext(PlayerContext);
-  
+
   if (!results) return null;
-  
+
   return (
     <div>
       <Section>
@@ -55,16 +55,21 @@ const SearchResults = ({ results }) => {
                   {track.title} <br />({track.romaji_title})
                 </Highlight>
                 <br />
-                {track.artists.map((artist, index) => (
-                  <RetroButton
-                    onClick={() => navigate(`/artist/${artist.id}`)}
-                    key={artist.id}
-                  >
-                    {artist.name}
-                  </RetroButton>
-                ))}
+                {results.artists && results.artists.length > 0 ? (
+                  track.artists.map((artist, index) => (
+                    <RetroButton
+                      onClick={() => navigate(`/artist/${artist.id}`)}
+                      key={artist.id}
+                    >
+                      {artist.name}
+                    </RetroButton>
+                  ))
+                ) : (
+                  <span>UNKOWN</span>
+                )}
                 {" — "}
                 {track.album ? ` ${track.album}` : ""}
+                <br />
                 <RetroButton
                   onClick={() => {
                     // Play this single track from search results
