@@ -58,8 +58,7 @@ const NoResults = styled.div`
 const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
   const navigate = useNavigate();
   const { playTrack } = useContext(PlayerContext);
-  
-  
+
   if (loading)
     return (
       <div style={{ color: "var(--terminal-green)" }}>LOADING TRACKS...</div>
@@ -91,41 +90,46 @@ const MusicList = ({ songs, loading, error, onSelectSong, actionLabel }) => {
         ╚══════════════════╝
         `}
       </ASCIIDecoration>
-      {songs && songs.map((song) => (
-        <MusicItem key={song.id} onClick={() => onSelectSong && onSelectSong(song)}>
-          <Title>{song.title}</Title>
-          {song.artists
-                ? song.artists.map((artist, index) => (
-            <Artist
-              key={artist.id}
+      {songs &&
+        songs.map((song) => (
+          <MusicItem
+            key={song.id}
+            onClick={() => onSelectSong && onSelectSong(song)}
+          >
+            <Title>{song.title}</Title>
+            {song.artists
+              ? song.artists.map((artist, index) => (
+                  <Artist
+                    key={artist.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/artist/${artist.id}`);
+                    }}
+                  >
+                    {artist.name}
+                  </Artist>
+                ))
+              : "UNKOWN"}
+            <RetroButton
               onClick={(e) => {
                 e.stopPropagation();
-                navigate(`/artist/${artist.id}`);
+                // Play this single track
+                playTrack(song);
               }}
             >
-              {artist.name} {artist.id}
-            </Artist>
-          )): ""}
-          <RetroButton
-            onClick={(e) => {
-              e.stopPropagation();
-              // Play this single track
-              playTrack(song);
-            }}
-          >
-            ► Play
-          </RetroButton>
-          <RetroButton
-            onClick={(e) => {
-              e.stopPropagation();
-              // Play the entire playlist starting from this track
-              playTrack(song, songs);
-            }}
-          >
-            ► Play All
-          </RetroButton>
-        </MusicItem>
-      ))}
+              ► Play
+            </RetroButton>
+            <RetroButton
+              onClick={(e) => {
+                e.stopPropagation();
+                // Play the entire playlist starting from this track
+                playTrack(song, songs);
+              }}
+            >
+              ► Play All
+            </RetroButton>
+          </MusicItem>
+        ))}
     </ListContainer>
   );
 };

@@ -55,7 +55,7 @@ const SearchResults = ({ results }) => {
                   {track.title} <br />({track.romaji_title})
                 </Highlight>
                 <br />
-                {results.artists && results.artists.length > 0 ? (
+                {track.artists && track.artists.length > 0 ? (
                   track.artists.map((artist, index) => (
                     <RetroButton
                       onClick={() => navigate(`/artist/${artist.id}`)}

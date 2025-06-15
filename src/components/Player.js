@@ -71,7 +71,7 @@ const TerminalButton = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  
+
   &:before {
     content: "[";
     margin-right: 4px;
@@ -83,12 +83,13 @@ const TerminalButton = styled.button`
     margin-left: 4px;
     color: var(--terminal-comment);
   }
-  
+
   &:hover {
     background: var(--terminal-comment);
     color: var(--terminal-bg);
-    
-    &:before, &:after {
+
+    &:before,
+    &:after {
       color: var(--terminal-bg);
     }
   }
@@ -101,14 +102,14 @@ const ProgressBar = styled.input`
   background: transparent;
   border: none;
   height: 4px;
-  
+
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 4px;
     background: var(--terminal-border);
     border-radius: 2px;
   }
-  
+
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 12px;
@@ -126,14 +127,14 @@ const VolumeBar = styled.input`
   background: transparent;
   border: none;
   height: 3px;
-  
+
   &::-webkit-slider-runnable-track {
     width: 100%;
     height: 3px;
     background: var(--terminal-border);
     border-radius: 1.5px;
   }
-  
+
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     height: 10px;
@@ -176,7 +177,7 @@ const AlbumArt = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   img {
     width: 100%;
     height: 100%;
@@ -201,59 +202,62 @@ export const PlayerProvider = ({ children }) => {
   const [playlist, setPlaylist] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  
+
   // Play a specific track and optionally set a new playlist
-  const playTrack = useCallback((track, newPlaylist = null) => {
-    if (newPlaylist) {
-      setPlaylist(newPlaylist);
-      setCurrentIndex(newPlaylist.findIndex(t => t.id === track.id));
-    } else if (playlist.length > 0) {
-      // If we're playing a track without a new playlist, find its index in the current playlist
-      const index = playlist.findIndex(t => t.id === track.id);
-      if (index !== -1) {
-        setCurrentIndex(index);
+  const playTrack = useCallback(
+    (track, newPlaylist = null) => {
+      if (newPlaylist) {
+        setPlaylist(newPlaylist);
+        setCurrentIndex(newPlaylist.findIndex((t) => t.id === track.id));
+      } else if (playlist.length > 0) {
+        // If we're playing a track without a new playlist, find its index in the current playlist
+        const index = playlist.findIndex((t) => t.id === track.id);
+        if (index !== -1) {
+          setCurrentIndex(index);
+        } else {
+          // If the track isn't in the current playlist, create a single-track playlist
+          setPlaylist([track]);
+          setCurrentIndex(0);
+        }
       } else {
-        // If the track isn't in the current playlist, create a single-track playlist
+        // No playlist exists, create a single-track playlist
         setPlaylist([track]);
         setCurrentIndex(0);
       }
-    } else {
-      // No playlist exists, create a single-track playlist
-      setPlaylist([track]);
-      setCurrentIndex(0);
-    }
-    
-    setCurrentTrack(track);
-    setIsPlaying(true);
-  }, [playlist]);
-  
+
+      setCurrentTrack(track);
+      setIsPlaying(true);
+    },
+    [playlist]
+  );
+
   const togglePlay = useCallback(() => {
-    setIsPlaying(prev => !prev);
+    setIsPlaying((prev) => !prev);
   }, []);
-  
+
   // In the PlayerProvider component
   const nextTrack = useCallback(() => {
     if (playlist.length === 0 || currentIndex >= playlist.length - 1) return;
-    
+
     const nextIndex = currentIndex + 1;
     setCurrentIndex(nextIndex);
     setCurrentTrack(playlist[nextIndex]);
     // Make sure we're playing when navigating
     setIsPlaying(true);
   }, [playlist, currentIndex]);
-  
+
   const previousTrack = useCallback(() => {
     if (playlist.length === 0 || currentIndex <= 0) return;
-    
+
     const prevIndex = currentIndex - 1;
     setCurrentIndex(prevIndex);
     setCurrentTrack(playlist[prevIndex]);
     // Make sure we're playing when navigating
     setIsPlaying(true);
   }, [playlist, currentIndex]);
-  
+
   return (
-    <PlayerContext.Provider 
+    <PlayerContext.Provider
       value={{
         currentTrack,
         setCurrentTrack,
@@ -264,7 +268,7 @@ export const PlayerProvider = ({ children }) => {
         togglePlay,
         playTrack,
         nextTrack,
-        previousTrack
+        previousTrack,
       }}
     >
       {children}
@@ -273,16 +277,16 @@ export const PlayerProvider = ({ children }) => {
 };
 
 const Player = () => {
-  const { 
-    currentTrack, 
-    playlist, 
+  const {
+    currentTrack,
+    playlist,
     currentIndex,
-    isPlaying, 
-    togglePlay, 
-    nextTrack, 
-    previousTrack 
+    isPlaying,
+    togglePlay,
+    nextTrack,
+    previousTrack,
   } = React.useContext(PlayerContext);
-  
+
   const [progress, setProgress] = useState(0);
   const [volume, setVolume] = useState(50);
   const [coverArt, setCoverArt] = useState(null);
@@ -290,21 +294,23 @@ const Player = () => {
 
   useEffect(() => {
     if (currentTrack) {
-      document.title = `${currentTrack.title} - ${currentTrack.artists ? currentTrack.artists[0].name : 'Unknown'}`;
-      
+      document.title = `${currentTrack.title} - ${
+        currentTrack.artists ? currentTrack.artists[0].name : "Unknown"
+      }`;
+
       // Fetch track info to get cover art
       const fetchTrackInfo = async () => {
         try {
           const trackInfo = await musicApi.getTrackInfo(currentTrack.id);
           if (trackInfo && trackInfo.cover_art) {
-            console.log(trackInfo)
+            console.log(trackInfo);
             setCoverArt(trackInfo.cover_art);
           }
         } catch (error) {
           console.error("Error fetching track info:", error);
         }
       };
-      
+
       fetchTrackInfo();
     }
   }, [currentTrack]);
@@ -312,21 +318,25 @@ const Player = () => {
   useEffect(() => {
     if (audioRef.current && currentTrack) {
       // The endpoint directly streams the audio file
-      const apiBaseUrl = ("http://localhost:8000/").replace(/\/$/, "");
+      const apiBaseUrl = "http://localhost:8000/".replace(/\/$/, "");
       const audioUrl = `${apiBaseUrl}/track/${currentTrack.id}/play`;
       audioRef.current.src = audioUrl;
       audioRef.current.load();
       setProgress(0);
       if (isPlaying) {
-        audioRef.current.play().catch(err => console.error("Playback error:", err));
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Playback error:", err));
       }
     }
-  }, [currentTrack]); 
-  
+  }, [currentTrack]);
+
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        audioRef.current.play().catch(err => console.error("Playback error:", err));
+        audioRef.current
+          .play()
+          .catch((err) => console.error("Playback error:", err));
       } else {
         audioRef.current.pause();
       }
@@ -359,10 +369,10 @@ const Player = () => {
           (audioRef.current.currentTime / audioRef.current.duration) * 100;
         setProgress(newProgress || 0);
       };
-      
+
       audioRef.current.addEventListener("timeupdate", updateProgress);
       audioRef.current.addEventListener("ended", handleTrackEnded);
-      
+
       return () => {
         if (audioRef.current) {
           audioRef.current.removeEventListener("timeupdate", updateProgress);
@@ -387,24 +397,24 @@ const Player = () => {
   return (
     <PlayerContainer>
       <PlayerHeader>Now Playing</PlayerHeader>
-      
+
       {coverArt && (
         <AlbumArt>
           <img src={`data:image/jpeg;base64,${coverArt}`} alt="Album Cover" />
         </AlbumArt>
       )}
-      
+
       <TrackInfo>
         <TrackTitle>{currentTrack.title}</TrackTitle>
         <TrackArtist>
-          {currentTrack.artists 
-            ? currentTrack.artists.map(artist => artist.name).join(", ") 
+          {currentTrack.artists
+            ? currentTrack.artists.map((artist) => artist.name).join(", ")
             : "Unknown Artist"}
         </TrackArtist>
       </TrackInfo>
-      
+
       <audio ref={audioRef} />
-      
+
       <Controls>
         <TerminalButton onClick={previousTrack}>PREV</TerminalButton>
         <TerminalButton onClick={togglePlay}>
@@ -412,7 +422,7 @@ const Player = () => {
         </TerminalButton>
         <TerminalButton onClick={nextTrack}>NEXT</TerminalButton>
       </Controls>
-      
+
       <ProgressBar
         type="range"
         min="0"
@@ -420,9 +430,9 @@ const Player = () => {
         value={progress || 0}
         onChange={handleProgressChange}
       />
-      
+
       <VolumeSlider>
-        <span style={{ fontSize: '0.7rem', marginRight: '5px' }}>VOL-</span>
+        <span style={{ fontSize: "0.7rem", marginRight: "5px" }}>VOL-</span>
         <VolumeBar
           type="range"
           min="0"
@@ -430,11 +440,11 @@ const Player = () => {
           value={volume}
           onChange={(e) => setVolume(e.target.value)}
         />
-        <span style={{ fontSize: '0.7rem', marginLeft: '5px' }}>+</span>
+        <span style={{ fontSize: "0.7rem", marginLeft: "5px" }}>+</span>
       </VolumeSlider>
-      
+
       <VolumeLabel>{volume}%</VolumeLabel>
-      
+
       {playlist.length > 1 && (
         <PlaybackMode>
           Track {currentIndex + 1}/{playlist.length}
