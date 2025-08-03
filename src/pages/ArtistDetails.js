@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ArtistInfo from "../components/ArtistInfo";
 import AlbumList from "../components/AlbumList";
+import Singles from "../components/Singles";
 import { musicApi } from "../services/api";
 import RetroBackButton from "../components/RetroBackButton";
 
@@ -45,6 +46,7 @@ function ArtistDetails() {
       <RetroBackButton />
       <ArtistInfo artist={artist} />
       <AlbumList albums={albums} />
+      <Singles singles={artist.singles} />
     </ArtistDetailsContainer>
   );
 }

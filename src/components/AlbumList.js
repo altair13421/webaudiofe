@@ -52,13 +52,14 @@ export default function AlbumList({ albums }) {
             Play Album
           </RetroButton>
           <h3>{album.title}</h3>
+          <h4>{album.romaji_title}</h4>
           <TrackList>
             {album.tracks.map((track) => (
               <TrackItem onClick={(e) => {
                 e.stopPropagation();
                 // Play this single track
                 playTrack(track);
-              }} key={track.id}>◉ {track.title}</TrackItem>
+              }} key={track.id}>◉ {track.title} | {track.romaji_title}</TrackItem>
             ))}
           </TrackList>
         </AlbumContainer>

@@ -318,7 +318,7 @@ const Player = () => {
   useEffect(() => {
     if (audioRef.current && currentTrack) {
       // The endpoint directly streams the audio file
-      const apiBaseUrl = "http://localhost:8000/".replace(/\/$/, "");
+      const apiBaseUrl = "http://localhost:8008/".replace(/\/$/, "");
       const audioUrl = `${apiBaseUrl}/track/${currentTrack.id}/play`;
       audioRef.current.src = audioUrl;
       audioRef.current.load();
