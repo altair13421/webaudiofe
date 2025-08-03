@@ -1,6 +1,74 @@
-# Getting Started with Create React App
+# Frontend For Web Audio Player
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Created a React App For Practice, and personal Use For my personal music player.
+
+THE MAIN REPO IS AT
+[This URL](https://github.com/altair13421/WebAudioPlayer)
+
+## Config
+
+### Docker
+
+Apparently, I made a Non docker use, and normal use
+the main `docker-compose.yml` file is in the main repo, so need to Make it so the File Structure is Like This
+
+```txt
+.
+├── data
+├── docker-compose.yml
+├── webaudiofe # Frontend
+└── WebAudioPlayer # Backend
+```
+
+The configs to look at
+
+```yml
+services:
+  ## will contain only frontend config, backend config to be explained in backend repo
+  frontend:
+    build:
+      context: ./webaudiofe # THe Folder
+      dockerfile: Dockerfile-dev # Change if you want to use the prod one
+    volumes:
+      - ./webaudiofe:/app # Mount Directory for This App.
+      - /app/node_modules  # Isolate node_modules
+    environment:
+      - NODE_ENV=development
+      - REACT_APP_API_URL=http://localhost:8008/api/ # BACKEND URL. Have to append /api/ to the end
+    ports:
+      - "3000:3000" # open whatever port you need. Don't Forget to DO it in Dockerfile-dev/Dockerfile-prod
+    depends_on:
+      - backend
+    restart: unless-stopped
+    stdin_open: true  # For interactive terminal
+    tty: true         # For color output
+
+## The rest of the File
+```
+
+Build only Frontend?
+
+```sh
+# Build Frontend
+docker-compose build frontend
+# or with file
+docker-compose -f docker-compose.yml build frontend
+
+# Since it needs backend to be done, make sure to build that and run that so this can run
+```
+
+### Normal Usage
+
+```sh
+#Install node modules
+npm i
+
+# need to somehow download the latest react-scripts, since it doesn't
+npm install react-scripts@latest --save
+
+# Start
+npm start
+```
 
 ## Available Scripts
 
@@ -28,43 +96,3 @@ The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

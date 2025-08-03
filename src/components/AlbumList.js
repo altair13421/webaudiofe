@@ -59,7 +59,7 @@ export default function AlbumList({ albums }) {
                 e.stopPropagation();
                 // Play this single track
                 playTrack(track);
-              }} key={track.id}>◉ {track.title} | {track.romaji_title}</TrackItem>
+              }} key={track.id}>◉ {track.title} <br /> <small>english:</small> {track.romaji_title}</TrackItem>
             ))}
           </TrackList>
         </AlbumContainer>
