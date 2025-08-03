@@ -1,0 +1,29 @@
+FROM archlinux:latest
+
+# 1. Install Node.js and npm
+RUN pacman -Syu --noconfirm --needed \
+    nodejs \
+    npm \
+    && pacman -Scc --noconfirm
+
+# 2. Set working directory
+WORKDIR /app
+
+# 3. Copy package files first (for better caching)
+COPY package.json package-lock.json ./
+
+# 4. Install dependencies
+RUN npm ci
+
+# 5. Copy the rest of the files
+COPY . .
+
+# 6. Build the app (for production)
+RUN npm run build
+
+# 7. Install serve for production
+RUN npm install -g serve
+
+# 8. Expose port and run
+EXPOSE 3000
+CMD ["serve", "-s", "build", "-l", "3000"]

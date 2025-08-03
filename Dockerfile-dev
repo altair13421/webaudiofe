@@ -1,0 +1,24 @@
+FROM archlinux:latest
+
+# 1. Install Node.js and npm
+RUN pacman -Syu --noconfirm --needed \
+    nodejs \
+    npm \
+    && pacman -Scc --noconfirm
+
+# 2. Set working directory
+WORKDIR /app
+
+# 3. Copy package files
+COPY package.json package-lock.json ./
+
+# 4. Install dependencies
+RUN npm i
+RUN npm install react-scripts@latest --save
+
+# 5. Copy source files
+COPY . .
+
+# 6. Start development server
+EXPOSE 3000
+CMD ["npm", "start"]
