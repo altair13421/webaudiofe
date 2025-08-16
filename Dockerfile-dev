@@ -20,5 +20,5 @@ RUN npm install react-scripts@latest --save
 COPY . .
 
 # 6. Start development server
-EXPOSE 3000
+EXPOSE 4000
 CMD ["npm", "start"]
